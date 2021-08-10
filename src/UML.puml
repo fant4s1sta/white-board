@@ -1,0 +1,170 @@
+@startuml 
+class gui.HostGUI{
+- JFrame frame
+- File currentFile
+- JMenuItem saveButton
++ void HostGUI (Host )
+- void initialize ()
++ String getImageAsString (BufferedImage )
++ void setUsers (JSONArray )
+}
+class gui.UserGUI{
+- JMenu file
+- Integer startX
+- Integer startY
+- Integer endX
+- Integer endY
+- Boolean mouseOn
+- JPanel boardPanel
+- JPanel userPanel
+- Lock lock
+- JList<String> userList
+- BufferedImage board
+- String selectedTool
+- JButton selectedButton
+- Color selectedColor
+- JPanel colorPanel
+- JSpinner sizeSpinner
+- Controller controller
++ void UserGUI (Controller )
+- void initialize ()
++ MouseAdapter toolSelector (JButton button, String )
++ Lock getLock ()
++ BufferedImage getBoard ()
++ void setBoard (BufferedImage )
++ Color getColor ()
++ void setColor (Color )
++ String getSelectedTool ()
++ JMenu getFile ()
++ void repaintBoard ()
++ boolean isCoordinatesValid ()
++ void resetXY ()
++ Controller getController ()
++ void selectTool (JButton button, String )
++ void setBoard (String )
++ void resetBoard ()
++ void setUsers (JSONArray )
++ JList<String> getUserList ()
++ void draw (JSONObject )
++ void drawPreview (Graphics )
++ boolean isShape ()
++ boolean isPickerText ()
++ boolean isPenEraser ()
+}
+class model.Host{
+- Server server
+- int userID
+- String nickname
+- HostGUI hostGUI
++ void Host (Server server, int userID, String )
++ void start ()
++ int getUserID ()
++ String getNickname ()
++ void sendMessage (String )
++ boolean isDisconnected ()
++ void disconnect ()
++ UserGUI getGUI ()
++ void sendToServer (Object )
++ String getImageAsString ()
++ void receiveFromServer (String )
++ boolean approve (String )
++ void kick (int )
+}
+class model.JSON{
++ String OPERATION
++ String USERS
++ String NICKNAME
++ String USERID
++ String TOOL
++ String PEN
++ String ERASER
++ String CIRCLE
++ String RECTANGLE
++ String OVAL
++ String LINE
++ String TEXT
++ String PICKER
++ String RECOVER
++ String PAINT
++ String X0
++ String Y0
++ String X1
++ String Y1
++ String WIDTH
++ String HEIGHT
++ String SIZE
++ String COLOR
++ String CANVAS
+}
+class model.User{
+- int userID
+- String nickname
+- Server server
+- Socket socket
+- DataInputStream input
+- DataOutputStream output
+- ExecutorService executor
+- Thread thread
+- Boolean terminated
+- Boolean started
++ void User (int userID, Socket socket, Server )
++ int getUserID ()
++ String getNickname ()
++ void start ()
++ void sendMessage (String )
++ boolean isDisconnected ()
++ void disconnect ()
++ boolean isStarted ()
+}
+interface model.UserInterface {
++ int getUserID ()
++ String getNickname ()
++ void start ()
++ void sendMessage (String )
++ boolean isDisconnected ()
++ void disconnect ()
+}
+class client.Client{
+- String address
+- int portNumber
+- String nickname
+- UserGUI userGUI
+- DataInputStream input
+- DataOutputStream output
+- Socket socket
+- Lock sendLock
+- Thread thread
++ void main (String[] )
++ void Client (String address, int portNumber, String )
++ void start ()
++ UserGUI getGUI ()
++ void sendToServer (Object )
+}
+class server.Server{
+- int portNumber
+- String address
+- String nickname
+- Integer userID
+- Host host
+- List<UserInterface> users
+- Lock lock
+- int currentUserID
++ void main (String[] )
++ void Server (String address, int portNumber, String )
++ void start ()
++ void addUser (Socket )
++ void receive (String message, UserInterface )
++ String getJSONBoardMessage ()
++ void updateMessage (String )
++ void updateUserList ()
++ void addUserToList (UserInterface )
++ String getUserListMessage ()
++ void kick (int )
+}
+class controller.Controller{
++ UserGUI getGUI ()
++ void start ()
++ void sendToServer (Object )
++ void receiveFromServer (Object )
+}
+@enduml 
